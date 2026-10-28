@@ -5,12 +5,12 @@
 ### Nama Kelompok: Ir. Ikhsan
 
 ### Anggota Kelompok
-| NIM | Nama | Kelas Praktikum |
-| -------- | -------- | -------- |
-| 123240003  | Bylbiss El Haqqie  | IF-I  |
-| 123240063  | Muhammad Arif Hermawan  | IF-A  |
-| 123240234  | Alifah Chairul Munawar  | IF-I  |
-| 123240241  | Ikhsan Wahyu Endriarto  | IF-E  |
+| NIM | Nama | Kelas Teori | Kelas Praktikum |
+| -------- | -------- | -------- | -------- |
+| 123240003  | Bylbiss El Haqqie  | IF-B | IF-I  |
+| 123240063  | Muhammad Arif Hermawan  | IF-B | IF-A  |
+| 123240234  | Alifah Chairul Munawar  | IF-B | IF-I  |
+| 123240241  | Ikhsan Wahyu Endriarto  | IF-B | IF-E  |
 
 ## Overview
 
