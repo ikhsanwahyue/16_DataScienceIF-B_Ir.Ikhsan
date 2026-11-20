@@ -31,3 +31,19 @@ Dengan mengolah variabel kondisi klinis dan riwayat pemanfaatan fasilitas keseha
 **URL**: [Kaggle](https://www.kaggle.com/datasets/mohankrishnathalla/medical-insurance-cost-prediction)
 
 Dataset provides information about 100,000 individuals including their demographics, socioeconomic status, health conditions, lifestyle factors, insurance plans, and medical expenditures. The dataset was compiled from publicly available health surveys, insurance research studies, and anonymized online healthcare data. It reflects a diverse population across multiple provinces/regions, covering demographics, lifestyle, health conditions, and insurance metrics from 2015 to 2024.
+
+
+## Penggunaan
+1. Clone repositori ini ke lokal Anda.
+```
+git clone https://github.com/ikhsanwahyue/16_DataScienceIF-B_Ir.Ikhsan.git
+```
+2. Install dependensi yang diperlukan.
+```
+pip install -r requirements.txt
+```
+3. Jalankan script utama `main.ipynb` secara urut dari atas ke bawah untuk melatih model dan melihat hasil evaluasi model.
+4. Jalankan file `app.py` untuk memulai aplikasi web prediksi biaya klaim medis tahunan. Anda diminta untuk memasukkan data pasien baru melalui antarmuka web, dan aplikasi akan menampilkan prediksi biaya klaim medis tahunan berdasarkan model yang telah dilatih.
+```
+streamlit run app.py
+```
