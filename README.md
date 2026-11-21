@@ -1,49 +1,38 @@
 # Prediksi Biaya Klaim Medis Tahunan Berdasarkan Kondisi Klinis dan Pemanfaatan Fasilitas Kesehatan
 
-### Nomor Kelompok: 16
+**Nomor Kelompok:** 16  
+**Nama Kelompok:** Ir. Ikhsan  
+**Anggota:** Bylbiss El Haqqie (123240003), Muhammad Arif Hermawan (123240063), Alifah Chairul Munawar (123240234), Ikhsan Wahyu Endriarto (123240241).
 
-### Nama Kelompok: Ir. Ikhsan
-
-### Anggota Kelompok
-| NIM | Nama | Kelas Teori | Kelas Praktikum |
-| -------- | -------- | -------- | -------- |
-| 123240003  | Bylbiss El Haqqie  | IF-B | IF-I  |
-| 123240063  | Muhammad Arif Hermawan  | IF-B | IF-A  |
-| 123240234  | Alifah Chairul Munawar  | IF-B | IF-I  |
-| 123240241  | Ikhsan Wahyu Endriarto  | IF-B | IF-E  |
+---
 
 ## Overview
 
-Proyek ini bertujuan untuk memprediksi biaya medis tahunan pasien menggunakan model *machine learning* berbasis regresi.
+Proyek ini bertujuan memprediksi biaya medis tahunan pasien menggunakan regresi *machine learning* berdasarkan dataset Kaggle (*Medical Insurance Cost Dataset* oleh Mohan Krishna Thalla, mencakup 100.000 data individu 2015–2024) guna membantu penetapan premi asuransi yang presisi dan mencegah kerugian finansial.
 
-### Latar Belakang
-Kegagalan prediksi faktor risiko nasabah pada program asuransi kesehatan (seperti kasus kebangkrutan massal 21 dari 23 organisasi CO-OP di bawah ACA/Obamacare di AS) berdampak vital pada *underpricing* dan kesalahan penetapan premi. Proyek ini hadir untuk mengatasi risiko kerugian akibat klaim yang tidak terprediksi.
+## Struktur Direktori Utama
 
-### Solusi & Tujuan
-Dengan mengolah variabel kondisi klinis dan riwayat pemanfaatan fasilitas kesehatan, model ini dirancang untuk:
-* Mengestimasi risiko kesehatan nasabah secara akurat.
-* Menjadi acuan penetapan premi asuransi yang presisi.
-* Meminimalkan risiko finansial dan kerugian perusahaan asuransi.
+Kode utama aplikasi terletak di `Praktikum Data Science/Insurance Cost Prediction/`, berisi folder `.streamlit`, `app/` (halaman Streamlit), `data/`, `docs/`, `models/`, `notebooks/`, `reports/`, `scripts/`, `src/`, beserta `config.yaml` dan `requirements.txt`.
 
-## Dataset
-**Author**: [Mohan Krishna Thalla](https://www.kaggle.com/mohankrishnathalla)
+## Panduan Penggunaan & Menjalankan Aplikasi
 
-**URL**: [Kaggle](https://www.kaggle.com/datasets/mohankrishnathalla/medical-insurance-cost-prediction)
-
-Dataset provides information about 100,000 individuals including their demographics, socioeconomic status, health conditions, lifestyle factors, insurance plans, and medical expenditures. The dataset was compiled from publicly available health surveys, insurance research studies, and anonymized online healthcare data. It reflects a diverse population across multiple provinces/regions, covering demographics, lifestyle, health conditions, and insurance metrics from 2015 to 2024.
-
-
-## Penggunaan
-1. Clone repositori ini ke lokal Anda.
+### 1. Persiapan Lingkungan
+```bash
+git clone https://github.com
+cd "16_DataScienceIF-B_Ir.Ikhsan/Praktikum Data Science/Insurance Cost Prediction"
+python -m venv .venv
 ```
-git clone https://github.com/ikhsanwahyue/16_DataScienceIF-B_Ir.Ikhsan.git
-```
-2. Install dependensi yang diperlukan.
-```
-pip install -r requirements.txt
-```
-3. Jalankan script utama `main.ipynb` secara urut dari atas ke bawah untuk melatih model dan melihat hasil evaluasi model.
-4. Jalankan file `app.py` untuk memulai aplikasi web prediksi biaya klaim medis tahunan. Anda diminta untuk memasukkan data pasien baru melalui antarmuka web, dan aplikasi akan menampilkan prediksi biaya klaim medis tahunan berdasarkan model yang telah dilatih.
-```
-streamlit run app.py
+* **Aktivasi:** ` .venv\Scripts\activate` (CMD), `.venv\Scripts\Activate.ps1` (PowerShell), atau `source .venv/bin/activate` (macOS/Linux).
+* **Instal Dependensi:** `pip install -r requirements.txt` *(Streamlit v1.50+)*.
+
+### 2. Mode Simulasi (Data Uji)
+Jika artefak `model.joblib` belum tersedia:
+* **CMD:** `python scripts\buat_artefak_uji.py` -> `set MEDCOST_ARTIFACTS=.dummy` -> `streamlit run app\streamlit_app.py`
+* **PowerShell:** `python scripts/buat_artefak_uji.py` -> `$env:MEDCOST_ARTIFACTS=".dummy"` -> `streamlit run app/streamlit_app.py`
+* **macOS/Linux:** `python scripts/buat_artefak_uji.py` -> `MEDCOST_ARTIFACTS=.dummy streamlit run app/streamlit_app.py`
+
+### 3. Mode Model Asli
+Setelah `model.joblib` dan tabel evaluasi di `reports/tables/` tersedia, nonaktifkan variabel mode uji (contoh CMD: `set MEDCOST_ARTIFACTS=`) lalu jalankan:
+```bash
+streamlit run app/streamlit_app.py
 ```
