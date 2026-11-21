@@ -10,7 +10,7 @@ DEMO_MODE = bool(_override)
 ARTIFACT_ROOT = (ROOT / _override).resolve() if _override else ROOT
 
 MODEL_PATH = ARTIFACT_ROOT / "models" / "model.joblib"
-DATA_DIR = ARTIFACT_ROOT / "data" / "raw"
+DATA_DIR = ARTIFACT_ROOT / "data"
 DATA_FILENAME = "medical_insurance.csv"
 TABLES_DIR = ARTIFACT_ROOT / "reports" / "tables"
 METRICS_PATH = TABLES_DIR / "metrics.csv"
