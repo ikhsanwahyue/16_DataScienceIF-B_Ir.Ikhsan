@@ -1,0 +1,12 @@
+streamlit>=1.50
+plotly>=5.20
+pandas
+numpy
+scipy
+scikit-learn
+joblib
+ipython
+matplotlib
+nbconvert
+nbformat
+seaborn
