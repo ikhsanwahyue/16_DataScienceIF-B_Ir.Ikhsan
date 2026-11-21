@@ -19,6 +19,30 @@ def _stamp(path):
 def _load_bundle(path_str, stamp):
     obj = joblib.load(path_str)
     if isinstance(obj, dict) and "model" in obj:
+        model = obj["model"]
+        if hasattr(model, "predict"):
+            if "columns" in obj and hasattr(obj["columns"], "__iter__"):
+                model.feature_columns_ = list(obj["columns"])
+            if "num_cols" in obj:
+                model.numerical_columns_ = list(obj["num_cols"])
+            if "scaler" in obj:
+                model.scaler_ = obj["scaler"]
+
+            raw_columns = getattr(model, "raw_feature_columns_", None)
+            if raw_columns is None:
+                feature_columns = getattr(model, "feature_columns_", None)
+                if feature_columns is not None:
+                    raw_columns = []
+                    prefixes = ("sex_", "smoker_", "alcohol_freq_")
+                    for name in map(str, feature_columns):
+                        base = name
+                        for prefix in prefixes:
+                            if name.startswith(prefix):
+                                base = prefix[:-1]
+                                break
+                        if base not in raw_columns:
+                            raw_columns.append(base)
+                    model.raw_feature_columns_ = raw_columns
         return obj
     if hasattr(obj, "predict"):
         return {"model": obj}

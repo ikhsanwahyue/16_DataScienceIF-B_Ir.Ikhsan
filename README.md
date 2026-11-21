@@ -23,7 +23,7 @@ Proyek ini membangun model **regresi** untuk memprediksi biaya klaim medis tahun
 - *Under-pricing*: nasabah berisiko tinggi dikenai tarif murah, sehingga klaim melampaui premi dan *loss ratio* membengkak.
 - *Over-pricing*: nasabah sehat dikenai tarif mahal, sehingga cenderung berpindah ke kompetitor (*customer churn*).
 
-**Solusi.** Model regresi yang mengestimasi biaya klaim medis tahunan secara objektif dari data klinis dan pemanfaatan layanan. Biaya klaim murni dipilih sebagai target, bukan premi akhir, karena premi dipengaruhi faktor komersial seperti tier polis dan margin perusahaan.
+**Solusi.** Model regresi yang mengestimasi **biaya tagihan medis tahunan** secara objektif dari data klinis dan pemanfaatan layanan. Biaya tagihan murni dipilih sebagai target, bukan premi akhir, karena premi dipengaruhi faktor komersial seperti tier polis dan margin perusahaan.
 
 **Pemangku kepentingan.** Tim aktuaria, tim underwriting, tim pemasaran dan pengembangan produk, tim data science dan IT, manajemen eksekutif, serta calon nasabah.
 
@@ -33,7 +33,7 @@ Proyek ini membangun model **regresi** untuk memprediksi biaya klaim medis tahun
 |---|---|
 | Jenis tugas | Supervised learning, regresi |
 | Target | `annual_medical_cost` (USD) |
-| Model yang dibandingkan | Linear Regression, Ridge, Lasso (perbarui daftar ini bila ada model tambahan di `main.ipynb`) |
+| Model yang dibandingkan | Linear Regression, Ridge, Lasso |
 | Metrik evaluasi | MAE, RMSE, R² |
 | Pembagian data | 80% latih dan 20% uji, `random_state=42` |
 
@@ -59,10 +59,10 @@ Hasil, tabel perbandingan, dan kesimpulan lengkap ada pada bagian *Modeling*, *E
 | Business Understanding | Latar belakang, solusi, import library, memuat dataset | Muhammad Arif Hermawan |
 | Data Understanding | Cek missing value, cek data duplikat, deteksi outlier | Muhammad Arif Hermawan |
 | Data Understanding | Exploratory Data Analysis | Bylbiss El Haqqie |
-| Data Preparation | Data cleaning | Alifah |
+| Data Preparation | Data cleaning | Alifah Chairul Munawar |
 | Data Preparation | Penanganan usia minimum | Bylbiss El Haqqie |
 | Data Preparation | Penanganan inkonsistensi Age vs Education | Alifah Chairul Munawar |
-| Data Preparation | Penanganan inkonsistensi Age vs Marital Status | Arif |
+| Data Preparation | Penanganan inkonsistensi Age vs Marital Status | Muhammad Arif Hermawan |
 | Data Preparation | Penanganan inkonsistensi Age vs Employment Status | Ikhsan Wahyu Endriarto |
 | Data Preparation | Feature selection dan data splitting | Ikhsan Wahyu Endriarto |
 | Data Preparation | Data preprocessing | Ikhsan Wahyu Endriarto |
@@ -82,7 +82,7 @@ Hasil, tabel perbandingan, dan kesimpulan lengkap ada pada bagian *Modeling*, *E
 | Ukuran asli | 100.000 baris dan 54 kolom |
 | File di repository | `data/medical_insurance.csv` |
 
-Dataset memuat profil demografi, status sosial-ekonomi, kondisi kesehatan, gaya hidup, informasi polis, dan pengeluaran medis. Kamus data lengkap (nama kolom, tipe, satuan) ada pada bagian Data Gathering di `main.ipynb`.
+Dataset memuat profil demografi, status sosial-ekonomi, kondisi kesehatan, gaya hidup, informasi asuransi, dan pemanfaatan fasilitas kesehatan.
 
 **Ringkasan kondisi data.**
 
@@ -145,8 +145,8 @@ InsuranceCostPrediction-DataScience/
 ### 1. Unduh proyek dan pasang library
 
 ```bash
-git clone <url-repository>
-cd InsuranceCostPrediction-DataScience
+git clone https://github.com/ikhsanwahyue/16_DataScienceIF-B_Ir.Ikhsan.git
+cd 16_DataScienceIF-B_Ir.Ikhsan
 
 python -m venv .venv
 # Windows:
@@ -194,8 +194,8 @@ Semua metrik pada dashboard dibaca dari `models/model.joblib`, yaitu hasil langs
 - Model dilatih dari data Amerika Serikat periode 2015-2024. Penerapan pada populasi atau periode lain dapat menurunkan akurasi, dan model perlu dilatih ulang secara berkala.
 - Hubungan antara kondisi klinis dan biaya diasumsikan relatif stabil selama periode data.
 - Variabel sosio-ekonomi dan geografis sengaja tidak dipakai agar model tidak mempelajari diskriminasi historis.
-- Data kesehatan tergolong data pribadi yang sensitif (UU No. 27 Tahun 2022 tentang Pelindungan Data Pribadi dan GDPR). Kolom identitas tidak dipakai, dan dashboard tidak menyimpan data yang diunggah pengguna.
-- Hasil model adalah estimasi pendukung keputusan, bukan keputusan akhir penerimaan polis atau penetapan premi.
+- Data kesehatan tergolong data pribadi yang sensitif (45 CFR § 164.502(b)). Kolom identitas tidak dipakai, dan dashboard tidak menyimpan data yang diunggah pengguna.
+- Hasil model adalah estimasi pendukung keputusan, bukan keputusan akhir penerimaan polis atau penetapan premi. 
 
 ## Lisensi dan Referensi
 
@@ -205,3 +205,7 @@ Semua metrik pada dashboard dibaca dari `models/model.joblib`, yaitu hasil langs
 **Referensi**
 
 Thalla, M. K. (2025). *Medical Insurance Cost Prediction*. Kaggle. https://www.kaggle.com/datasets/mohankrishnathalla/medical-insurance-cost-prediction
+
+TODO:
+- Tambah kamus data di README.md
+- Streamlit: model memprediksi terlalu tinggi

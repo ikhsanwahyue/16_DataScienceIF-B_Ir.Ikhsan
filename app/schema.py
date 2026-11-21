@@ -46,7 +46,7 @@ FIELDS = (
     _int("age", "Usia (tahun)", 35, 18, 90, G_PROFILE),
     _cat("sex", "Jenis kelamin", "Female", ("Female", "Male", "Other")),
     _cat("smoker", "Status merokok", "Never", ("Never", "Former", "Current")),
-    _cat("alcohol_freq", "Frekuensi alkohol", "None", ("None", "Occasional", "Weekly", "Daily")),
+    _cat("alcohol_freq", "Frekuensi alkohol", "Unknown", ("Unknown", "Occasional", "Weekly", "Daily")),
     _num("bmi", "BMI (kg/m²)", 24.0, 10.0, 60.0, 0.1, G_VITALS),
     _num("systolic_bp", "Tekanan sistolik (mmHg)", 120.0, 70.0, 250.0, 1.0, G_VITALS),
     _num("diastolic_bp", "Tekanan diastolik (mmHg)", 78.0, 40.0, 150.0, 1.0, G_VITALS),

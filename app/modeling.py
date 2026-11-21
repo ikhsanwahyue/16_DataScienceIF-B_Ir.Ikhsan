@@ -15,8 +15,66 @@ def inner_pipeline(model):
 
 
 def expected_features(model):
-    names = getattr(inner_pipeline(model), "feature_names_in_", None)
-    return list(names) if names is not None else None
+    pipe = inner_pipeline(model)
+    raw_names = getattr(pipe, "raw_feature_columns_", None)
+    if raw_names is not None:
+        return list(raw_names)
+
+    names = getattr(pipe, "feature_columns_", None)
+    if names is not None:
+        return list(names)
+    encoded = getattr(pipe, "feature_names_in_", None)
+    if encoded is None:
+        return None
+
+    raw = []
+    for name in map(str, encoded):
+        base = name
+        for prefix in ("sex_", "smoker_", "alcohol_freq_"):
+            if name.startswith(prefix):
+                base = prefix[:-1]
+                break
+        if base not in raw:
+            raw.append(base)
+    return raw
+
+
+def prepare_model_input(model, df):
+    """Ubah data mentah menjadi kolom dan skala yang dipakai estimator."""
+    out = df.copy()
+    for col in ("sex", "smoker", "alcohol_freq"):
+        if col in out.columns:
+            out[col] = out[col].fillna("Unknown").astype(str)
+
+    pipe = inner_pipeline(model)
+    encoded_columns = getattr(pipe, "feature_columns_", None)
+    if encoded_columns is None:
+        encoded_names = getattr(pipe, "feature_names_in_", None)
+        if encoded_names is not None and any(
+            str(name).startswith(("sex_", "smoker_", "alcohol_freq_"))
+            for name in encoded_names
+        ):
+            encoded_columns = list(encoded_names)
+    if encoded_columns is not None:
+        encoded = pd.get_dummies(
+            out,
+            columns=[c for c in ("sex", "smoker", "alcohol_freq") if c in out.columns],
+            drop_first=True,
+            dtype=int,
+        )
+        encoded = encoded.reindex(columns=list(encoded_columns), fill_value=0)
+    else:
+        encoded = out
+
+    scaler = getattr(pipe, "scaler_", None)
+    numeric_columns = getattr(pipe, "numerical_columns_", None)
+    if scaler is not None and numeric_columns is not None:
+        missing = [c for c in numeric_columns if c not in encoded.columns]
+        if missing:
+            raise ValueError("Kolom numerik hilang: " + ", ".join(missing))
+        encoded = encoded.copy()
+        encoded[list(numeric_columns)] = scaler.transform(encoded[list(numeric_columns)])
+    return encoded
 
 
 def add_derived(df, overwrite=True):
@@ -28,7 +86,13 @@ def add_derived(df, overwrite=True):
 
 
 def predict_usd(model, df, features):
-    return np.clip(np.asarray(model.predict(df[features]), dtype=float), 0, None)
+    raw_columns = expected_features(model)
+    encoded = prepare_model_input(model, df)
+    if raw_columns is not None:
+        missing = [c for c in raw_columns if c not in df.columns and c not in encoded.columns]
+        if missing:
+            raise ValueError("Kolom fitur hilang: " + ", ".join(missing))
+    return np.clip(np.asarray(model.predict(encoded), dtype=float), 0, None)
 
 
 def categories_from_model(model):
