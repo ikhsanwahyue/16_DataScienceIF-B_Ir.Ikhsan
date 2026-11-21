@@ -8,10 +8,9 @@ from modeling import (
 )
 from schema import DERIVED, FIELD_BY_NAME, GROUPS, LABELS, visible_fields
 from settings import ACCENT, ALERT, MAX_BATCH_ROWS, MODEL_PATH, NEUTRAL, TARGET
-from ui import demo_banner, fmt_num, fmt_usd, missing_state, show, style_fig
+from ui import fmt_num, fmt_usd, missing_state, show, style_fig
 
 st.title("Prediksi Biaya Klaim")
-demo_banner()
 
 model, err = load_model()
 if model is None:

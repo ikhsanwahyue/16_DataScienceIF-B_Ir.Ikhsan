@@ -1,12 +1,11 @@
 import streamlit as st
 
-from loaders import dataset_path, load_dataset, load_table
-from settings import METRICS_PATH, R2_TARGET, TARGET
-from ui import demo_banner, fmt_num, fmt_usd, missing_state
+from loaders import dataset_path, load_artifact, load_dataset
+from settings import R2_TARGET, TARGET
+from ui import fmt_num, fmt_usd, missing_artifact, missing_state
 
 st.title("Prediksi Biaya Klaim Medis Tahunan")
 st.caption("Berdasarkan kondisi klinis dan pemanfaatan fasilitas kesehatan")
-demo_banner()
 
 st.markdown(
     "Asuransi yang salah memperkirakan biaya klaim akan salah menetapkan tarif. Nasabah berisiko "
@@ -17,10 +16,10 @@ st.markdown(
 )
 
 st.header("Model terbaik")
-metrics, err = load_table(METRICS_PATH)
+metrics, err = load_artifact("metrics")
 needed = {"model", "r2_test", "rmse_test", "mae_test"}
 if metrics is None:
-    missing_state("Tabel metrik model", METRICS_PATH, err)
+    missing_artifact("Tabel metrik model", "metrics", err)
 elif not needed <= set(metrics.columns):
     st.error(f"Kolom metrik kurang: {', '.join(sorted(needed - set(metrics.columns)))}.")
 else:

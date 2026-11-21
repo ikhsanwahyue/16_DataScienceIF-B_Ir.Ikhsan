@@ -4,19 +4,18 @@ import plotly.express as px
 import plotly.graph_objects as go
 import streamlit as st
 
-from loaders import load_table
+from loaders import load_artifact
 from modeling import regression_scores
-from settings import ACCENT, ALERT, IMPORTANCE_PATH, METRICS_PATH, NEUTRAL, PREDICTIONS_PATH, R2_TARGET
-from ui import demo_banner, fmt_num, fmt_usd, missing_state, pretty_name, show, style_fig
+from settings import ACCENT, ALERT, NEUTRAL, R2_TARGET
+from ui import fmt_num, fmt_usd, missing_artifact, pretty_name, show, style_fig
 
 st.title("Performa Model")
-demo_banner()
 
-metrics, err = load_table(METRICS_PATH)
+metrics, err = load_artifact("metrics")
 st.header("Perbandingan model")
 needed = {"model", "r2_test", "rmse_test", "mae_test"}
 if metrics is None:
-    missing_state("Tabel metrik model", METRICS_PATH, err)
+    missing_artifact("Tabel metrik model", "metrics", err)
 elif not needed <= set(metrics.columns):
     st.error(f"Kolom metrik kurang: {', '.join(sorted(needed - set(metrics.columns)))}.")
 else:
@@ -41,9 +40,9 @@ else:
         st.caption("Selisih R² latih dan uji yang besar menandakan overfitting; kriteria proyek menghendaki selisih mendekati 0.")
 
 st.header("Kualitas prediksi pada data uji")
-preds, err = load_table(PREDICTIONS_PATH)
+preds, err = load_artifact("predictions_test")
 if preds is None:
-    missing_state("Prediksi data uji", PREDICTIONS_PATH, err)
+    missing_artifact("Prediksi data uji", "predictions_test", err)
 elif not {"y_true", "y_pred"} <= set(preds.columns):
     st.error("File prediksi harus punya kolom y_true dan y_pred.")
 elif preds.empty:
@@ -87,9 +86,9 @@ else:
     )
 
 st.header("Feature importance")
-imp, err = load_table(IMPORTANCE_PATH)
+imp, err = load_artifact("feature_importance")
 if imp is None:
-    missing_state("Tabel feature importance", IMPORTANCE_PATH, err)
+    missing_artifact("Tabel feature importance", "feature_importance", err)
 elif not {"feature", "importance"} <= set(imp.columns):
     st.error("File importance harus punya kolom feature dan importance.")
 elif imp.empty:

@@ -5,10 +5,9 @@ import streamlit as st
 from loaders import dataset_path, load_dataset
 from schema import BINARY_NAMES, CATEGORY_NAMES, DERIVED, LABELS, NUMERIC_NAMES
 from settings import ACCENT, ALERT, NEUTRAL, TARGET
-from ui import demo_banner, fmt_num, fmt_usd, missing_state, show, style_fig
+from ui import fmt_num, fmt_usd, missing_state, show, style_fig
 
 st.title("Eksplorasi Data")
-demo_banner()
 
 df, err = load_dataset()
 if df is None:

@@ -2,21 +2,20 @@ import pandas as pd
 import plotly.express as px
 import streamlit as st
 
-from loaders import dataset_path, load_dataset, load_model, load_table
+from loaders import dataset_path, load_artifact, load_dataset, load_model
 from modeling import add_derived, drift_table, error_summary, expected_features, predict_usd, regression_scores
 from schema import DERIVED, FIELDS
-from settings import ACCENT, ALERT, MAX_BATCH_ROWS, METRICS_PATH, MODEL_PATH, NEUTRAL, PREDICTIONS_PATH, TARGET
-from ui import demo_banner, fmt_num, fmt_usd, missing_state, show, style_fig
+from settings import ACCENT, ALERT, MAX_BATCH_ROWS, MODEL_PATH, NEUTRAL, TARGET
+from ui import fmt_num, fmt_usd, missing_artifact, missing_state, show, style_fig
 
 st.title("Fairness dan Monitoring")
-demo_banner()
 
 tab_fair, tab_drift = st.tabs(["Keadilan model", "Monitoring data baru"])
 
 with tab_fair:
-    preds, err = load_table(PREDICTIONS_PATH)
+    preds, err = load_artifact("predictions_test")
     if preds is None:
-        missing_state("Prediksi data uji", PREDICTIONS_PATH, err)
+        missing_artifact("Prediksi data uji", "predictions_test", err)
     elif not {"y_true", "y_pred"} <= set(preds.columns):
         st.error("File prediksi harus punya kolom y_true dan y_pred.")
     elif not {"sex", "age"} & set(preds.columns):
@@ -103,7 +102,7 @@ with tab_drift:
             except Exception as exc:
                 st.error(f"Prediksi gagal: {type(exc).__name__}: {exc}")
                 st.stop()
-            metrics, _ = load_table(METRICS_PATH)
+            metrics, _ = load_artifact("metrics")
             test_mae = None
             if metrics is not None and {"r2_test", "mae_test"} <= set(metrics.columns):
                 test_mae = float(metrics.loc[metrics["r2_test"].idxmax(), "mae_test"])

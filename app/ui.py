@@ -4,7 +4,7 @@ from __future__ import annotations
 import plotly.graph_objects as go
 import streamlit as st
 
-from settings import ACCENT, ALERT, DEMO_MODE, NEUTRAL, ROOT
+from settings import ACCENT, ALERT, NEUTRAL, ROOT
 
 
 def _id_format(text):
@@ -26,12 +26,11 @@ def pretty_name(name):
     return LABELS.get(short, short)
 
 
-def demo_banner():
-    if DEMO_MODE:
-        st.warning(
-            "Mode data uji: semua angka dan model di halaman ini berasal dari data sintetis "
-            "buatan skrip uji, bukan hasil proyek."
-        )
+def missing_artifact(label, key, err=None):
+    if err:
+        st.error(f"{label} gagal dibaca dari `models/model.joblib`: {err}")
+        return
+    st.info(f"{label} belum ada di `models/model.joblib` (kunci `{key}`). Simpan dari sel terakhir main.ipynb.")
 
 
 def missing_state(label, path, err=None):
