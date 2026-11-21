@@ -5,3 +5,8 @@ numpy
 scipy
 scikit-learn
 joblib
+ipython
+matplotlib
+nbconvert
+nbformat
+seaborn
