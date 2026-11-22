@@ -2,7 +2,7 @@ import pandas as pd
 import plotly.express as px
 import streamlit as st
 
-from loaders import load_dataset, load_model
+from loaders import load_dataset, load_model, load_bundle
 from modeling import (
     add_derived, categories_from_model, expected_features, forest_interval, predict_usd, what_if_drivers,
 )
@@ -11,6 +11,14 @@ from settings import ACCENT, ALERT, MAX_BATCH_ROWS, MODEL_PATH, NEUTRAL, TARGET
 from ui import fmt_num, fmt_usd, missing_state, show, style_fig
 
 st.title("Prediksi Biaya Klaim")
+
+used_model = str(load_model()).split("(", 2)[1].split("(")[0]
+st.info(f"Model digunakan: **{used_model}**, (fit pada {TARGET})")
+
+if used_model == "Lasso":
+    with st.expander("Koefisien Lasso"):
+        bundle, err = load_bundle()
+        st.write(bundle.get("lasso_coeff"))
 
 model, err = load_model()
 if model is None:
@@ -48,7 +56,7 @@ def default_for(field, options):
     return field.default
 
 
-baseline_values = {f.name: default_for(f, options_for(f) if f.kind == "category" else ()) for f in visible}
+baseline_values = {f.name: default_for(f, f.options if f.kind == "category" else ()) for f in visible}
 
 
 def render(field):
@@ -128,7 +136,7 @@ with tab_single:
         st.header("Hasil")
         band = risk_band(estimate)
         c1, c2, c3 = st.columns(3)
-        c1.metric("Estimasi biaya tahunan", fmt_usd(estimate))
+        c1.metric("Estimasi biaya tagihan medis tahunan", fmt_usd(estimate))
         if result["interval"]:
             lo, hi = result["interval"]
             c2.metric("Sebaran pohon, persentil 10-90", f"{fmt_usd(lo, 0)} - {fmt_usd(hi, 0)}",
@@ -136,13 +144,21 @@ with tab_single:
         if band:
             c3.metric("Kategori biaya", band[0])
             st.caption(
-                f"Kategori mengikuti data referensi: Rendah di bawah median ({fmt_usd(band[1], 0)}), "
-                f"Sedang sampai persentil 90 ({fmt_usd(band[2], 0)}), Tinggi di atasnya. "
-                "Batas ini aturan sederhana aplikasi, bukan standar aktuaria."
+                f"Kategori mengikuti data referensi. Batas ini aturan sederhana aplikasi, bukan standar aktuaria."
+            )
+            st.dataframe(
+                pd.DataFrame({
+                    "Kategori": ["Rendah", "Sedang", "Tinggi"],
+                    "Rentang (USD)": [
+                        f"Di bawah {fmt_usd(band[1], 0)}", 
+                        f"{fmt_usd(band[1], 0)} sampai {fmt_usd(band[2], 0)}", 
+                        f"Di atas {fmt_usd(band[2], 0)}"
+                    ],
+                })
             )
         if reference is not None:
             share = (reference[TARGET] <= estimate).mean() * 100
-            st.write(f"Estimasi ini lebih tinggi dari {fmt_num(share, 1)}% biaya medis nasabah dalam data referensi.")
+            st.write(f"Estimasi ini lebih tinggi dari {fmt_num(share, 1)}% biaya medis nasabah dalam data referensi. \nCatatan: Grafik ini hanya menunjukkan posisi data prediksi jika ditempatkan dalam dataset, tidak menunjukkan akurasi prediksi.")
             hist = px.histogram(
                 reference[reference[TARGET] <= reference[TARGET].quantile(0.99)], x=TARGET, nbins=70,
                 color_discrete_sequence=[NEUTRAL], labels={TARGET: "Biaya medis tahunan (USD)"},
@@ -168,12 +184,16 @@ with tab_single:
                 "Selisih estimasi bila fitur tersebut diganti ke nilai profil referensi, satu per satu. "
                 "Ini analisis what-if, bukan nilai Shapley, dan bisa tidak berjumlah sama dengan total."
             )
-        with st.expander("Profil referensi"):
-            st.dataframe(
-                pd.DataFrame({"fitur": [LABELS.get(k, k) for k in baseline_values], "nilai": [str(v) for v in baseline_values.values()]}),
-                hide_index=True, width="stretch",
-            )
-        st.caption("Estimasi pendukung keputusan, bukan keputusan akhir penerimaan polis atau penetapan premi.")
+        # debug: parameter dikirim
+        # st.write("Parameter dikirim ke model:", values)
+
+
+        # with st.expander("Profil referensi"):
+        #     st.dataframe(
+        #         pd.DataFrame({"fitur": [LABELS.get(k, k) for k in baseline_values], "nilai": [str(v) for v in baseline_values.values()]}),
+        #         hide_index=True, width="stretch",
+        #     )
+        # st.caption("Estimasi pendukung keputusan, bukan keputusan akhir penerimaan polis atau penetapan premi.")
 
 with tab_batch:
     st.write("Unggah CSV berisi kolom fitur yang sama dengan form. Templat di bawah memuat kolom yang dibutuhkan.")

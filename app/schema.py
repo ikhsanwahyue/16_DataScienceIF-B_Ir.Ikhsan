@@ -43,7 +43,7 @@ def _cat(name, label, default, options, group=G_PROFILE):
 
 
 FIELDS = (
-    _int("age", "Usia (tahun)", 35, 18, 90, G_PROFILE),
+    _int("age", "Usia (tahun)", 40, 18, 90, G_PROFILE),
     _cat("sex", "Jenis kelamin", "Female", ("Female", "Male", "Other")),
     _cat("smoker", "Status merokok", "Never", ("Never", "Former", "Current")),
     _cat("alcohol_freq", "Frekuensi alkohol", "Unknown", ("Unknown", "Occasional", "Weekly", "Daily")),
@@ -62,7 +62,7 @@ FIELDS = (
     _flag("arthritis", "Arthritis"),
     _flag("mental_health", "Diagnosis kesehatan mental"),
     _flag("asthma", "Asma"),
-    _int("visits_last_year", "Kunjungan ke penyedia layanan, 1 tahun terakhir", 2, 0, 100, G_USE),
+    _int("visits_last_year", "Kunjungan ke penyedia layanan, 1 tahun terakhir", 0, 0, 100, G_USE),
     _int("hospitalizations_last_3yrs", "Rawat inap, 3 tahun terakhir", 0, 0, 30, G_USE),
     _int("days_hospitalized_last_3yrs", "Total hari rawat inap, 3 tahun terakhir", 0, 0, 365, G_USE),
     _int("medication_count", "Jumlah obat aktif", 0, 0, 40, G_USE),
@@ -70,7 +70,7 @@ FIELDS = (
     _int("proc_surgery_count", "Jumlah operasi", 0, 0, 20, G_USE),
     _int("proc_physio_count", "Sesi fisioterapi/psikologis", 0, 0, 100, G_USE),
     _int("proc_consult_count", "Konsultasi spesialis", 0, 0, 50, G_USE),
-    _int("proc_lab_count", "Tes laboratorium", 1, 0, 100, G_USE),
+    _int("proc_lab_count", "Tes laboratorium", 0, 0, 100, G_USE),
     _flag("had_major_procedure", "Kejadian medis besar dalam 1 tahun terakhir", G_USE),
 )
 
