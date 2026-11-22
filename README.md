@@ -84,6 +84,65 @@ Hasil, tabel perbandingan, dan kesimpulan lengkap ada pada bagian *Modeling*, *E
 
 Dataset memuat profil demografi, status sosial-ekonomi, kondisi kesehatan, gaya hidup, informasi asuransi, dan pemanfaatan fasilitas kesehatan.
 
+## Kamus Data
+
+| Feature | Description | Data Type | Example |
+|---|---|---|---|
+| `person_id` | ID unik nasabah | Integer | `75722` |
+| `age` | Usia nasabah dalam tahun | Integer | `52` |
+| `sex` | Jenis kelamin nasabah | Kategorikal | `Female` |
+| `region` | Wilayah tempat tinggal | Kategorikal | `North` |
+| `urban_rural` | Klasifikasi wilayah tempat tinggal | Kategorikal | `Suburban` |
+| `income` | Pendapatan tahunan nasabah (USD) | Float | `22700.0` |
+| `education` | Tingkat pendidikan terakhir | Kategorikal | `Doctorate` |
+| `marital_status` | Status pernikahan | Kategorikal | `Married` |
+| `employment_status` | Status pekerjaan | Kategorikal | `Retired` |
+| `household_size` | Jumlah anggota rumah tangga | Integer | `3` |
+| `dependents` | Jumlah tanggungan | Integer | `1` |
+| `bmi` | Indeks massa tubuh | Float | `27.4` |
+| `smoker` | Status merokok | Kategorikal | `Never` |
+| `alcohol_freq` | Frekuensi konsumsi alkohol | Kategorikal | `None` |
+| `visits_last_year` | Jumlah kunjungan layanan kesehatan dalam satu tahun terakhir | Integer | `2` |
+| `hospitalizations_last_3yrs` | Jumlah rawat inap dalam tiga tahun terakhir | Integer | `0` |
+| `days_hospitalized_last_3yrs` | Total hari rawat inap dalam tiga tahun terakhir | Integer | `0` |
+| `medication_count` | Jumlah obat yang sedang dikonsumsi | Integer | `4` |
+| `systolic_bp` | Tekanan darah sistolik (mmHg) | Float | `121.0` |
+| `diastolic_bp` | Tekanan darah diastolik (mmHg) | Float | `76.0` |
+| `ldl` | Kadar kolesterol LDL (mg/dL) | Float | `123.8` |
+| `hba1c` | Kadar HbA1c (%) | Float | `5.28` |
+| `plan_type` | Jenis paket asuransi | Kategorikal | `PPO` |
+| `network_tier` | Tingkatan jaringan penyedia layanan | Kategorikal | `Bronze` |
+| `deductible` | Nilai biaya yang dibayar nasabah sebelum manfaat asuransi berlaku (USD) | Integer | `1000` |
+| `copay` | Biaya tetap yang dibayar nasabah setiap layanan (USD) | Integer | `20` |
+| `policy_term_years` | Lama kepesertaan polis (tahun) | Integer | `4` |
+| `policy_changes_last_2yrs` | Jumlah perubahan polis dalam dua tahun terakhir | Integer | `0` |
+| `provider_quality` | Skor kualitas penyedia layanan | Float | `3.73` |
+| `risk_score` | Skor risiko nasabah | Float | `0.5714` |
+| `annual_medical_cost` | Total biaya medis tahunan; variabel target model (USD) | Float | `6938.06` |
+| `annual_premium` | Premi asuransi tahunan (USD) | Float | `876.05` |
+| `monthly_premium` | Premi asuransi bulanan (USD) | Float | `73.0` |
+| `claims_count` | Jumlah klaim yang diajukan | Integer | `1` |
+| `avg_claim_amount` | Rata-rata nilai klaim (USD) | Float | `4672.59` |
+| `total_claims_paid` | Total pembayaran klaim oleh asuransi (USD) | Float | `4672.59` |
+| `chronic_count` | Jumlah penyakit kronis yang dimiliki | Integer | `1` |
+| `hypertension` | Indikator hipertensi (1 = ya, 0 = tidak) | Integer biner | `0` |
+| `diabetes` | Indikator diabetes (1 = ya, 0 = tidak) | Integer biner | `0` |
+| `asthma` | Indikator asma (1 = ya, 0 = tidak) | Integer biner | `0` |
+| `copd` | Indikator PPOK/COPD (1 = ya, 0 = tidak) | Integer biner | `0` |
+| `cardiovascular_disease` | Indikator penyakit kardiovaskular (1 = ya, 0 = tidak) | Integer biner | `0` |
+| `cancer_history` | Indikator riwayat kanker (1 = ya, 0 = tidak) | Integer biner | `0` |
+| `kidney_disease` | Indikator penyakit ginjal (1 = ya, 0 = tidak) | Integer biner | `0` |
+| `liver_disease` | Indikator penyakit hati (1 = ya, 0 = tidak) | Integer biner | `0` |
+| `arthritis` | Indikator arthritis (1 = ya, 0 = tidak) | Integer biner | `0` |
+| `mental_health` | Indikator diagnosis kesehatan mental (1 = ya, 0 = tidak) | Integer biner | `1` |
+| `proc_imaging_count` | Jumlah prosedur pencitraan, seperti X-ray, MRI, atau CT | Integer | `0` |
+| `proc_surgery_count` | Jumlah prosedur operasi | Integer | `1` |
+| `proc_physio_count` | Jumlah sesi fisioterapi atau psikologis | Integer | `0` |
+| `proc_consult_count` | Jumlah konsultasi spesialis | Integer | `2` |
+| `proc_lab_count` | Jumlah tes laboratorium | Integer | `0` |
+| `is_high_risk` | Indikator nasabah berisiko tinggi (1 = ya, 0 = tidak) | Integer biner | `1` |
+| `had_major_procedure` | Indikator pernah menjalani prosedur medis besar dalam satu tahun terakhir (1 = ya, 0 = tidak) | Integer biner | `0` |
+
 **Ringkasan kondisi data.**
 
 - Missing value hanya pada `alcohol_freq` (sekitar 30%), ditangani dengan kategori `Unknown`.
@@ -202,10 +261,7 @@ Semua metrik pada dashboard dibaca dari `models/model.joblib`, yaitu hasil langs
 - Kode proyek: lihat berkas [LICENSE](LICENSE).
 - Dataset: CC0 (Public Domain).
 
+
 **Referensi**
 
 Thalla, M. K. (2025). *Medical Insurance Cost Prediction*. Kaggle. https://www.kaggle.com/datasets/mohankrishnathalla/medical-insurance-cost-prediction
-
-TODO:
-- Tambah kamus data di README.md
-- Streamlit: model memprediksi terlalu tinggi
