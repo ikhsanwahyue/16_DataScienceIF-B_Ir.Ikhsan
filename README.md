@@ -57,6 +57,7 @@ Hasil, tabel perbandingan, dan kesimpulan lengkap ada pada bagian *Modeling*, *E
 | Tahap | Bagian | Penanggung jawab |
 |---|---|---|
 | Business Understanding | Latar belakang, solusi, import library, memuat dataset | Muhammad Arif Hermawan |
+| Data Gathering | Deskripsi fitur, ringkasan kondisi data | Alifah Chairul Munawar |
 | Data Understanding | Cek missing value, cek data duplikat, deteksi outlier | Muhammad Arif Hermawan |
 | Data Understanding | Exploratory Data Analysis | Bylbiss El Haqqie |
 | Data Preparation | Data cleaning | Alifah Chairul Munawar |
