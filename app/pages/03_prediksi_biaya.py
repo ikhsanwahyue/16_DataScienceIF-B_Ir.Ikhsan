@@ -12,7 +12,9 @@ from ui import fmt_num, fmt_usd, missing_state, show, style_fig
 
 st.title("Prediksi Biaya Klaim")
 
-used_model = str(load_model()).split("(", 2)[1].split("(")[0]
+loaded_model, err = load_model()
+loaded_model = str(loaded_model)
+used_model = "Lasso" if "Lasso" in loaded_model else "Linear Regression" if "Linear" in loaded_model else "Ridge" if "Ridge" in loaded_model else "Unknown"
 st.info(f"Model digunakan: **{used_model}**, (fit pada {TARGET})")
 
 if used_model == "Lasso":
